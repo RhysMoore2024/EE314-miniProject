@@ -3,10 +3,10 @@
 
 module tb_adder_subtractor;
 
-   reg  signed [9:0] A;
-   reg  signed [9:0] B;
+   reg  signed [10:0] A;
+   reg  signed [10:0] B;
    reg         [1:0] mode;
-   wire signed [9:0] result;
+   wire signed [10:0] result;
    wire              overflow;
    wire              div_by_zero;
 
@@ -48,7 +48,7 @@ module tb_adder_subtractor;
        // ---------------- MULTIPLICATION ----------------
        #10; A = 10'sd6;    B = 10'sd7;    mode = 2'b11; // 6 * 7 = 42
        #10; A = -10'sd8;   B = 10'sd4;    mode = 2'b11; // -8 * 4 = -32
-       #10; A = -10'sd9;   B = -10'sd3;   mode = 2'b11; // -9 * -3 = 27
+       #10; A = 10'sd9;   B = -10'sd3;   mode = 2'b11; // -9 * -3 = 27
        #10; A = 10'sd20;   B = 10'sd0;    mode = 2'b11; // 20 * 0 = 0
        #10; A = 10'sd100;  B = 10'sd6;    mode = 2'b11; // 600 -> overflow for 10-bit signed
 
@@ -56,4 +56,3 @@ module tb_adder_subtractor;
    end
 
 endmodule
-
