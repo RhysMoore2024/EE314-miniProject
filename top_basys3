@@ -1,0 +1,38 @@
+module top_basys3 (
+    input  wire        clk,        // 100 MHz clock
+    input  wire [15:0]  sw,         // switches
+    input  wire [2:0]   btn,        // buttons BTN0-BTN2 ONLY
+    output wire [15:0]  led         // LEDs
+);
+
+    // Operands
+    wire signed [7:0] A = sw[7:0];
+    wire signed [7:0] B = sw[15:8];
+
+    // Operation select
+    reg [1:0] mode;
+    always @(*) begin
+        if (btn[0])      mode = 2'b00; // ADD
+        else if (btn[1]) mode = 2'b01; // SUB
+        else if (btn[2]) mode = 2'b10; // DIV
+        else             mode = 2'b00;
+    end
+
+    wire signed [9:0] result;
+    wire overflow;
+    wire div_by_zero;
+
+    adder_subtractor_divider alu (
+        .A           (A),
+        .B           (B),
+        .mode        (mode),
+        .result      (result),
+        .overflow    (overflow),
+        .div_by_zero (div_by_zero)
+    );
+
+    assign led[9:0]  = result;
+    assign led[14]   = overflow;
+    assign led[15]   = div_by_zero;
+
+endmodule
